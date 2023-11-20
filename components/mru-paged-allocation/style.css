@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@200&family=Lexend&display=swap');
 body, html {
     background-color: #191919;
+    font-family: "Lexend", sans-serif;
     height: 100%;
     margin: 0;
     padding: 0;
@@ -11,22 +12,74 @@ body, html {
     font-family: "Lexend", sans-serif;
 }
 
-.nav-bar, .main-container, .output-tables {
+.nav-bar {
+    background-color: #252525;
+    color: white;
+    padding: 1em 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-bar h2 {
+    font-family: 'League Spartan', sans-serif;
+    font-size: 1.8em;
+}
+
+.nav-links {
+    list-style: none;
     display: flex;
 }
 
-.nav-bar {
-    justify-content: space-between;
-    margin: .2%;
-    padding-left: 1%;
-    padding-right: 1%;
+.nav-links li {
+    margin-right: 1.5em;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ddd;
+}
+
+.nav-links .dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #252525;
+    min-width: 160px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #333;
+}
+
+.main-container, .output-tables {
+    display: flex;
 }
 
 h2 {
     margin-top: 0;
-}
-
-h2, .nav-bar a {
     margin-bottom: 0;
 }
 
@@ -54,8 +107,8 @@ th, td {
     border: 1px solid white;
 }
 
-h2, label, button, .nav-bar a {
-    font-size: 2em;
+.main-container h2, label, button{
+    font-size: 1.8em;
     font-family: "Lexend", sans-serif;
     color: white;
 }
