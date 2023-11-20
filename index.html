@@ -31,15 +31,19 @@
     </nav>
 
     <div class="main-container">
-        <h2>Memory Scheduling Algos</h2>
+        <h1>Memory Scheduling Algos</h1>
         <div class="algo-links">
             <a href="components/relocation-comaption/reloc_compact.html">Relocation with Compaction</a>
+            <p>This memory allocation eliminates external and internal fragmentation through the relocation of jobs. For example, if there is a free space in between two jobs, the job below can be moved up so that the free space below can be increased which can improve the opportunities of jobs being allocated memory. However, this assigns jobs new memory addresses which greatly increase the complexity of memory management. Moreover, this process takes much more time due to the added complexity.</p>
             <a href="components/mru-paged-allocation/index.html">MRU Paged Allocation</a>
+            <p>In Most Recently Used paged allocation, the OS keeps track of the pages which have been used the most frequently. The idea behind this approach is that pages used the most are most likely to be accessed again soon which is why they are kept in the main memory to improve performance.</p>
         </div>
-        <h2>CPU Scheduling Algos</h2>
+        <h1>CPU Scheduling Algos</h1>
         <div class="algo-links">
             <a href="components/non-preemptive-fcfs/index.html">Non-Preemptive FCFS</a>
+            <p>In, non-preemptive process scheduling, processes are not interrupted as they are executing even if another process arrives during the execution time. New jobs are only processed when the previous job has been done executing. First come first serve in this scheme refers to how processes are prioritized. The sooner they arrive, the faster the CPU can process them.</p>
             <a href="#">Preemptive Priority</a>
+            <p>On the other hand, preemptive scheduling is where jobs are interrupted as they are executing when another job arrives. Thus, resources allocated to processes are only limited. This results in a lower response time as processes are taken care of sooner in small parts rather than waiting for a long time. However, low-priority processes will have to wait for a long time if many high-priority processes come at the same time.</p>
         </div>
     </div>
 

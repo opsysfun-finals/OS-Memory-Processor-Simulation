@@ -80,7 +80,9 @@ body {
 
 /* Main Container Styles */
 .main-container {
+    background-color: #252525;
     margin: 2em;
+    padding: 1em;
 }
 
 .algo-links a {
@@ -93,4 +95,8 @@ body {
 
 .algo-links a:hover {
     color: #555;
+}
+
+h6 {
+    font-size: 1em;
 }
