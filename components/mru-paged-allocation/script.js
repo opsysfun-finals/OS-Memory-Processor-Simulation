@@ -18,7 +18,8 @@ function getPages(form) {
   
     // Check if the input contains non-numeric characters or spaces only
     if (!string.match(/^[0-9\s]+$/)) {
-      throw new Error("Pages can only contain numbers separated by spaces");
+      alert("Pages can only contain numbers separated by spaces");
+      return;
     }
   
     // Split the string by spaces and convert each part to a number
