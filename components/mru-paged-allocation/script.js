@@ -26,26 +26,25 @@ function getPages(form) {
   }
 
 function runMRU(form) {
-    const outputDiv = document.getElementById('output');
-    outputDiv.innerHTML = ''; // Clear the content of the output div
-    try {
-    const inputString = getPages(form);
-    let x = inputString.length;
-    const frameSize = getFrameSize(form); // Set the size of the page frames
+    MRU(getPages(form), getFrameSize(form));
+}
+
+function MRU(pages, frameSize) {
     const frames = [];
+    const framesHistory = []; // Array to store the frames at each step
+    const pageFaultsHistory = []; // Array to store whether there is a page fault at each step
     let pageFaults = 0;
+    let x = pages.length;
 
-    function displayFrames() {
-        outputDiv.innerHTML += 'Frames: ' + frames.join(' ') + '<br>';
-    }
-
-    for (let i = 0; i < inputString.length; i++) {
-        const page = inputString[i];
+    for (let i = 0; i < pages.length; i++) {
+        const page = pages[i];
+        let pageFault = false;
 
         // Check if the page is already in the frame
         if (frames.includes(page)) {
-            displayFrames();
+            framesHistory.push([...frames]); // Store a copy of frames
         } else {
+            pageFault = true;
             pageFaults++;
 
             // Check if there is space in the frame
@@ -53,22 +52,61 @@ function runMRU(form) {
                 frames.push(page);
             } else {
                 // Find the index of the most recently used page in the frame and replace it
-                const lastUsedIndex = frames.map((p, index) => ({ page: p, lastIndex: inputString.lastIndexOf(p, i - 1) })).sort((a, b) => b.lastIndex - a.lastIndex)[0];
-                const index = frames.indexOf(lastUsedIndex.page);
+                let index = 0;
+                for (let j = 1; j < frames.length; j++) {
+                    if (frames[j] > frames[index]) {
+                        index = j;
+                    }
+                }
                 frames[index] = page;
             }
 
-            displayFrames();
+            framesHistory.push([...frames]); // Store a copy of frames
         }
+
+        pageFaultsHistory.push(pageFault);
     }
 
+    // Create a table dynamically
+    var table = document.getElementById("outputTable");
+    table.innerHTML = '';
+    // Create header row
+    const headerRow = table.insertRow();
+    const stepHeader = document.createElement('th');
+    stepHeader.textContent = 'Step';
+    headerRow.appendChild(stepHeader);
+
+    for (let i = 1; i <= frameSize; i++) {
+        const frameHeader = document.createElement('th');
+        frameHeader.textContent = `Frame ${i}`;
+        headerRow.appendChild(frameHeader);
+    }
+
+    const pageFaultHeader = document.createElement('th');
+    pageFaultHeader.textContent = 'Page Fault';
+    headerRow.appendChild(pageFaultHeader);
+
+    // Create rows for each step
+    for (let i = 0; i < framesHistory.length; i++) {
+        const row = table.insertRow();
+        const stepCell = row.insertCell(0);
+        stepCell.textContent = i + 1;
+
+        for (let j = 0; j < frameSize; j++) {
+            const cell = row.insertCell(j + 1);
+            cell.textContent = framesHistory[i][j] || '-';
+        }
+
+        const pageFaultCell = row.insertCell(frameSize + 1);
+        pageFaultCell.textContent = pageFaultsHistory[i] ? 'Yes' : 'No';
+    }
+
+    // Append the table to the body
+    //document.body.appendChild(table);
+    var outputDiv = document.getElementById("outputTable-container")
     outputDiv.innerHTML += '<br>Total Failure: ' + pageFaults;
     outputDiv.innerHTML += '<br>Total Success: ' + (x - pageFaults);
     outputDiv.innerHTML += '<br>Failure Rate: ' + (((pageFaults / x) * 100).toFixed(2));
     outputDiv.innerHTML += '<br>Success Rate: ' + (((x - pageFaults) / x) * 100).toFixed(2);
-    console.log((((x - pageFaults) / x) * 100).toFixed(2));
-    console.log(x);
-} catch (error) {
-    alert(error.message);
-}
+    console.log('Total Page Faults:', pageFaults);
 }
