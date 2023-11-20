@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Non-Preemptive FCFS</title>
+</head>
+<body>
+    <script src="process.js"></script>
+    
+    <nav class="nav-bar">
+        <a href="">Home</a>
+        <h2>Non-Preemptive FCFS</h2>
+        <a href="">Help</a>
+    </nav>
+
+    <div class="main-container">
+        <div class="input-container">
+            <h2>Input</h2>
+            <form name="input-form">
+                <label>Arrival Times</label>
+                <input type="text", name="arrivalTimes", placeholder="eg. 0 2 4 6 8">
+
+                <label>CPU Cycle</label>
+                <input type="text", name="cpuCycles", placeholder="eg. 1 3 5 7 9">
+                
+                <button type="button", onClick="processData(this.form)", >Process</button>
+            </form>
+        </div>
+
+        <div class="output-container">
+            <h2>Output</h2>
+            <div class="output-tables">
+                <table id="outputTable"></table>
+                <table id="gnattChart"></table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
