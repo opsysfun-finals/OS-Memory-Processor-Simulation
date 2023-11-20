@@ -32,8 +32,8 @@ function runMRU(form) {
 
 function MRU(pages, frameSize) {
     const frames = [];
-    const framesHistory = []; // Array to store the frames at each step
-    const pageFaultsHistory = []; // Array to store whether there is a page fault at each step
+    const framesHistory = [];
+    const pageFaultsHistory = [];
     let pageFaults = 0;
     let x = pages.length;
 
@@ -41,28 +41,20 @@ function MRU(pages, frameSize) {
         const page = pages[i];
         let pageFault = false;
 
-        // Check if the page is already in the frame
         if (frames.includes(page)) {
-            framesHistory.push([...frames]); // Store a copy of frames
+            framesHistory.push([...frames]);
         } else {
             pageFault = true;
             pageFaults++;
 
-            // Check if there is space in the frame
             if (frames.length < frameSize) {
-                frames.push(page);
+                frames.unshift(page); // Add the new page at the beginning (most recently used position)
             } else {
-                // Find the index of the most recently used page in the frame and replace it
-                let index = 0;
-                for (let j = 1; j < frames.length; j++) {
-                    if (frames[j] > frames[index]) {
-                        index = j;
-                    }
-                }
-                frames[index] = page;
+                frames.pop(); // Remove the least recently used page (last element in array)
+                frames.unshift(page); // Add the new page at the beginning
             }
 
-            framesHistory.push([...frames]); // Store a copy of frames
+            framesHistory.push([...frames]);
         }
 
         pageFaultsHistory.push(pageFault);
