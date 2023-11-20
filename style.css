@@ -81,6 +81,7 @@ body {
 /* Main Container Styles */
 .main-container {
     background-color: #252525;
+    border-radius: .5%;
     margin: 2em;
     padding: 1em;
 }
@@ -98,5 +99,6 @@ body {
 }
 
 h6 {
-    font-size: 1em;
+    font-size: 
+    1em;
 }

@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Relcation with Compaction</title>
+    <link rel="stylesheet" href="style.css"></link>
+    <title>Preemptive Priority</title>
 </head>
 <body>
-    <script src="process_data.js"></script>
-    
+    <script src="script.js"></script>
     <nav class="nav-bar">
-        <h2>Relcation with Compaction</h2>
+        <h2>Preemptive Priority</h2>
         <ul class="nav-links">
             <li><a href="../../index.html" class="active">Home</a></li>
             <li class="dropdown">
@@ -35,26 +34,17 @@
         <div class="input-container">
             <h2>Input</h2>
             <form name="input-form">
-                <label>Enter TOTAL Memory Size</label>
-                <input type="text", name="totalMemorySizeForm", placeholder="eg. 55">
+                <label>Arrival Times</label>
+                <input type="text", name="arrivalTimes", placeholder="eg. 0 2 4 6 8">
 
-                <label>Enter OS Size</label>
-                <input type="text", name="osSizeForm", placeholder="eg. 5">
+                <label>CPU Cycle</label>
+                <input type="text", name="cpuCycles", placeholder="eg. 1 3 5 7 9">
                 
-                <label>Enter Job Sizes</label>
-                <input type="text", name="jobSizesForm", placeholder="eg. 5 10 15 20">
+                <label>Priority</label>
+                <input type="text", name="priorityForm", placeholder="eg. 1 1 2 1 1">
 
-                <button type="button" onclick="processData(this.form)">Initial Allocation</button>
+                <button type="button" onclick="processData(this.form)">Process</button>
             </form>
-            <br>
-            <form id="Deallocate">
-                <h2>Deallocate</h2>
-                <label>Enter job index(es) to deallocate:</label><br>
-                <nav class="controls-nav">
-                    <input type="text" id="deallocateInput" placeholder="Enter index(es)" /><br>
-                    <button type="button" onclick="deallocateJobs()">Deallocate</button>
-                </nav>
-            </form>            
         </div>
 
         <div class="output-container">
