@@ -5,8 +5,15 @@ body, html {
     margin: 0;
     padding: 0;
 }
-
-h2 {
+.nav-bar {
+    background-color: #252525;
+    color: white;
+    padding: 1em 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+h2 ,  .nav-bar a{
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -17,12 +24,13 @@ h2 {
     flex-direction: row;
 }
 
+
 .output-tables {
-    display: flex;
     flex-direction: column;
+    display: flex;
     height: 50%;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 #outputTable, #gnattChart{
@@ -30,15 +38,18 @@ h2 {
     font-family: "Lexend", sans-serif;
     border: solid 1px white;
     border-collapse: collapse;
+    padding-right: 20px;
     margin: 2%;
 }
 
 th, td {
     border: 1px solid white;
+    padding: 8px;
+    text-align: center;
 }
 
-h2, label, button{
-    font-size: 2em;
+h2, label, button, .nav-bar a {
+    font-size: 1em;
     font-family: "Lexend", sans-serif;
     color: white;
 }
@@ -57,7 +68,10 @@ button {
 }
 
 input {
-    width: 100%;
+    width: 99%;
+    padding: 10px; /* You can adjust the padding value as needed */
+    margin-bottom: 10px; /* Optional: Add margin to separate input fields */
+    box-sizing: border-box; /* Optional: Include padding in the total width/height */
     font-size: 1.5em;
 }
 
@@ -70,7 +84,7 @@ input {
 
 .input-container {
     flex: 1;
-    height: 40%;
+    height: 27%;
 }
 
 .output-container {
@@ -78,14 +92,7 @@ input {
     height: 80%;
 }
 
-.nav-bar {
-    background-color: #252525;
-    color: white;
-    padding: 1em 2em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+
 
 .nav-bar h2 {
     font-family: 'League Spartan', sans-serif;
@@ -115,10 +122,8 @@ input {
     position: relative;
 }
 
-h2, label, button, .nav-bar a {
-    font-size: 1em;
-    font-family: "Lexend", sans-serif;
-    color: white;
+.nav-bar a {
+    text-decoration: none;
 }
 
 .dropdown-content {

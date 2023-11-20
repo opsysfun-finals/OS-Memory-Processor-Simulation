@@ -1,14 +1,14 @@
 
 function getArrivalTimes(form) {
-    return form.arrivalTimes.value;
+    return form.arrivalTimes.value.trim();
 }
 
 function getCpuCycles(form) {
-    return form.cpuCycles.value;
+    return form.cpuCycles.value.trim();
 }
 
 function getCpuPriority(form) {
-    return form.priorityForm.value;
+    return form.priorityForm.value.trim();
 }
 
 function convertData(string) {
@@ -203,6 +203,16 @@ function processData(form) {
     let x = getArrivalTimes(form);
     let y = getCpuCycles(form);
     let z = getCpuPriority(form);
+
+    function containsLettersOrSpecialCharacters(inputString) {
+        return /[^\d\s]/.test(inputString); // Regex to check for characters other than digits and spaces
+    }
+
+    // Check if inputs contain letters or special characters
+    if (containsLettersOrSpecialCharacters(x) || containsLettersOrSpecialCharacters(y) || containsLettersOrSpecialCharacters(z)) {
+        alert("Invalid Input. Please enter only numbers separated by spaces in Arrival Times, CPU Cycles, and Priority!");
+        return;
+    }
 
     // Convert the string to an array
     let arrival_array = convertData(x);

@@ -153,6 +153,22 @@ function getOsSize(form) {
     return form.osSizeForm.value;
 }
 
+function isValidInteger(input) {
+    return /^\d+$/.test(input);
+}
+
+function areAllValidIntegers(inputs) {
+    return inputs.every(input => isValidInteger(input));
+}
+
+function handleNonIntegerInput() {
+    alert('Please enter integers separated by space only!');
+}
+
+function handleEmptyInput() {
+    alert('Please enter a value!');
+}
+
 function processData(form) {
     // Variables used to name the jobs being added to the job list
     let jobNum;
@@ -164,6 +180,16 @@ function processData(form) {
 
     // Converts string into array containing integers
     let jobSize_array = jobs_string.split(" ").map(Number);
+
+    if (!isValidInteger(totalSize) || !isValidInteger(osSize) || !areAllValidIntegers(jobSize_array)) {
+        handleNonIntegerInput();
+        return;
+    }
+
+    if (totalSize === '' || osSize === '' || jobs_string === '') {
+        handleEmptyInput();
+        return;
+    }
 
     let jobList = [];
 

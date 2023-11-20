@@ -5,19 +5,16 @@ body, html {
     margin: 0;
     padding: 0;
 }
-
 .nav-bar {
+    background-color: #252525;
+    color: white;
+    padding: 1em 2em;
     display: flex;
     justify-content: space-between;
-    padding-left: 1%;
-    padding-right: 1%;
+    align-items: center;
 }
-
-h2 {
+h2 ,  .nav-bar a{
     margin-top: 0;
-}
-
-h2, .nav-bar a {
     margin-bottom: 0;
 }
 
@@ -27,12 +24,13 @@ h2, .nav-bar a {
     flex-direction: row;
 }
 
+
 .output-tables {
-    display: flex;
     flex-direction: column;
+    display: flex;
     height: 50%;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 #outputTable, #gnattChart{
@@ -69,12 +67,8 @@ button {
     margin-top: 1em;
 }
 
-.nav-bar a {
-    text-decoration: none;
-}
-
 input {
-    width: 100%;
+    width: 99%;
     padding: 10px; /* You can adjust the padding value as needed */
     margin-bottom: 10px; /* Optional: Add margin to separate input fields */
     box-sizing: border-box; /* Optional: Include padding in the total width/height */
@@ -90,7 +84,7 @@ input {
 
 .input-container {
     flex: 1;
-    height: 35%;
+    height: 27%;
 }
 
 .output-container {
@@ -98,14 +92,7 @@ input {
     height: 80%;
 }
 
-.nav-bar {
-    background-color: #252525;
-    color: white;
-    padding: 1em 2em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+
 
 .nav-bar h2 {
     font-family: 'League Spartan', sans-serif;
@@ -133,6 +120,10 @@ input {
 
 .nav-links .dropdown {
     position: relative;
+}
+
+.nav-bar a {
+    text-decoration: none;
 }
 
 .dropdown-content {

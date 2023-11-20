@@ -1,15 +1,34 @@
 function getFrameSize(form) {
-    return parseInt(form.frameSizeForm.value);
+    try {
+        const frameSize = parseInt(form.frameSizeForm.value);
+        console.log("Frame Count" + frameSize);
+        if (isNaN(frameSize)) {
+            throw new Error('Please input integers only');
+        }
+        
+        return frameSize;
+    } catch (error) {
+        alert(error.message);
+        return null; // or any other value that suits your needs
+    }
 }
 
 function getPages(form) {
-    return form.pageNumbersForm.value.split(' ').map(Number);;
-}
+    let string = form.pageNumbersForm.value.trim();
+  
+    // Check if the input contains non-numeric characters or spaces only
+    if (!string.match(/^[0-9\s]+$/)) {
+      throw new Error("Pages can only contain numbers separated by spaces");
+    }
+  
+    // Split the string by spaces and convert each part to a number
+    return string.split(/\s+/).map(Number);
+  }
 
 function runMRU(form) {
     const outputDiv = document.getElementById('output');
     outputDiv.innerHTML = ''; // Clear the content of the output div
-
+    try {
     const inputString = getPages(form);
     let x = inputString.length;
     const frameSize = getFrameSize(form); // Set the size of the page frames
@@ -49,4 +68,7 @@ function runMRU(form) {
     outputDiv.innerHTML += '<br>Success Rate: ' + (((x - pageFaults) / x) * 100).toFixed(2);
     console.log((((x - pageFaults) / x) * 100).toFixed(2));
     console.log(x);
+} catch (error) {
+    alert(error.message);
+}
 }

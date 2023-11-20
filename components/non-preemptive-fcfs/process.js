@@ -17,8 +17,13 @@ function combineArrays(arrival_array, burst_array) {
     // Combine the two arrays to form a key value pair
     for (let i = 0; i < arrival_array.length; i++) {
         let pair = {};
+        pair["ID"] = "P" + (i+1);
         pair["arrival"] = arrival_array[i];
         pair["burst"] = burst_array[i];
+        pair["startTime"] = -1;
+        pair["endTime"] = -1;
+        pair["waiting"] = 0;
+        pair["turnaround"] = 0;
         pair_array.push(pair);
     }
 
@@ -32,62 +37,48 @@ function combineArrays(arrival_array, burst_array) {
     Include the idle!
     pair_array Must already be sorted!
 */
-function schedule(pair_array) {
-    let clock = 0;
-    let start_times = [];
-    let end_times = [];
-    let waiting_times = [];
-    let turnover_times = [];
+function schedule(process) {
+    let ganttChart = [];
 
-    // Used by while loop below
-    let i = 0;
-
-    // Scheduling for first job
-    start_times.push(pair_array[i].arrival);
-    end_times.push(pair_array[i].burst + start_times[i]);
-    waiting_times.push(start_times[i] - pair_array[i].arrival);
-    turnover_times.push(end_times[i] - pair_array[i].arrival);
-
-    clock += end_times[i];
-    i++;
-
-    while (i < pair_array.length) {
-        // Determine if job arrival is within the current time
-        if (pair_array[i].arrival <= clock) {
-            start_times.push(end_times[i-1]);
-            end_times.push(pair_array[i].burst + start_times[i]);
-            clock++;
-        } else {
-            start_times.push(end_times[i-1] + (pair_array[i].arrival - clock));
-            end_times.push(pair_array[i].burst + start_times[i]);
-            clock += end_times[i];
-        }
-
-        // Solve for waiting and turnover
-        waiting_times.push(start_times[i] - pair_array[i].arrival);
-        turnover_times.push(end_times[i] - pair_array[i].arrival);
-        i++;
+    // Check for idle time before the first process
+    if (process[0].arrival > 0) {
+        let start = 0;
+        let end = process[0].arrival;
+        ganttChart.push({ process: 'Idle', start: start, end: end});
     }
-    console.log("start " +start_times);
-    console.log("end " +end_times);
-    console.log("wait "+waiting_times);
-    console.log("twt "+turnover_times);
+    // Start time for the first process is its arrival time
+    process[0].startTime = process[0].arrival;
 
-    return {
-        start_times,
-        end_times,
-        waiting_times,
-        turnover_times,
-    };
+    // Calculate waiting time, turnaround time, start time, and end time for each process
+    for (let i = 0; i < process.length; i++) {
+        if (i > 0 && process[i].arrival > process[i - 1].endTime) {
+            let start = process[i - 1].endTime;
+            let end = process[i].arrival;
+
+            ganttChart.push({ process: 'Idle', start: start, end: end});
+        }
+        // Calculate waiting time using the given formula
+        process[i].waiting = i > 0 ? (process[i - 1].arrival + process[i - 1].burst + process[i - 1].waiting) - process[i].arrival: 0 ;
+        // Calculate start time for the current process
+        process[i].startTime = process[i].arrival + process[i].waiting;
+
+        // Calculate end time for the current process
+        process[i].endTime = process[i].startTime + process[i].burst;
+
+        // Calculate turnaround time for the current process
+        process[i].turnaround = process[i].endTime - process[i].arrival;
+        ganttChart.push({
+            process: process[i].ID,
+            start: process[i].startTime,
+            end: process[i].endTime,
+        });
+
+    }
+    return ganttChart;
 }
 
-function createTable(pair_array, map) {
-    let start_times = map.start_times;
-    let end_times = map.end_times;
-    let wait_times = map.waiting_times; // Change to match the provided key in the returned object
-    let turnover_times = map.turnover_times;
-    let average_wait = 0;
-    let average_turnaround = 0;    
+function createTable(pair_array) {
+ 
 
     var table = document.getElementById("outputTable");
     
@@ -100,7 +91,7 @@ function createTable(pair_array, map) {
     
     // Create table header
     var headerRow = table.insertRow(0);
-    var headers = ['Arrival Times', 'Burst Times', 'Start Times', 'End Times', 'Waiting Times', 'Turnover Times'];
+    var headers = ['Process ID', 'Arrival Times', 'Burst Times', 'Start Times', 'End Times', 'Waiting Times', 'Turnover Times'];
 
     for (let i = 0; i < headers.length; i++) {
         let headerCell = headerRow.insertCell(i);
@@ -108,42 +99,38 @@ function createTable(pair_array, map) {
     }
 
     // Create table rows with data
-    for (let i = 0; i < start_times.length; i++) {
+    for (let i = 0; i < pair_array.length; i++) {
         var row = table.insertRow(i + 1);
-        var cells = [pair_array[i].arrival, pair_array[i].burst, start_times[i], end_times[i], wait_times[i], turnover_times[i]];
-
-        // Sum of waiting and turn around
-        average_wait += wait_times[i];
-        average_turnaround += turnover_times[i];
+        var cells = [pair_array[i].ID, pair_array[i].arrival, pair_array[i].burst, pair_array[i].startTime, pair_array[i].endTime, pair_array[i].waiting, pair_array[i].turnaround];
 
         for (let j = 0; j < cells.length; j++) {
             let cell = row.insertCell(j);
             cell.textContent = cells[j];
         }
     }
+ // Calculate average turnaround and waiting times
+ var avgTurnaround = 0;
+ var avgWaiting = 0;
 
-    average_wait /= wait_times.length;
-    average_turnaround /= turnover_times.length;
+ for (let i = 0; i < pair_array.length; i++) {
+     avgTurnaround += pair_array[i].turnaround;
+     avgWaiting += pair_array[i].waiting;
+ }
 
-    // Append average wait and turn around
-    var endRow = table.insertRow(-1);
+ avgTurnaround /= pair_array.length;
+ avgWaiting /= pair_array.length;
 
-    for (let i = 0; i < 6; i++) {
-        var endCell = endRow.insertCell(i);
-        
-        if (i === 4) {
-            endCell.textContent = average_wait.toFixed(2);
-        } else if (i === 5) {
-            endCell.textContent = average_turnaround.toFixed(2);
-        }
-    }
+ // Add a new row for average times
+ var avgRow = table.insertRow(pair_array.length + 1);
+ var avgCells = ['', '', '', '', 'Average:', '' + avgWaiting.toFixed(2), '' + avgTurnaround.toFixed(2)];
+
+ for (let j = 0; j < avgCells.length; j++) {
+     let cell = avgRow.insertCell(j);
+     cell.textContent = avgCells[j];
+ }
 }
 
-// FIX THIS
-function createGanttChart(map) {
-    let start_times = map.start_times;
-    let end_times = map.end_times;
-
+function createGanttChart(ganttChart) {
     var table = document.getElementById("gnattChart");
     
     if (!table) {
@@ -151,23 +138,29 @@ function createGanttChart(map) {
         return;
     }
 
-    table.innerHTML = ''; // Clear any existing content within the table
-
+    table.innerHTML = ''; // Clear any existing content within the Gantt chart
     var jobRow = table.insertRow(0);
     var timeRow = table.insertRow(1);
-
-    for (let i = 0; i < start_times.length; i++) {
+        
+    for (let i = 0; i < ganttChart.length; i++) {
         let jobCell = jobRow.insertCell(i);
         let timeCell = timeRow.insertCell(i);
 
-        let jobLabel = "J" + (i + 1);
-        let startTime = start_times[i];
-        let endTime = end_times[i];
+        let jobLabel = ganttChart[i].process;
+        let startTime = ganttChart[i].start;
+        let endTime = ganttChart[i].end;
 
         jobCell.textContent = jobLabel;
         jobCell.classList.add('job-cell');
 
-        timeCell.textContent = startTime;
+        if (i === 0){
+        timeCell.textContent = `${startTime} ---- ${endTime}`;
+        }
+        else
+        {
+            timeCell.textContent = endTime;
+        }
+
         timeCell.classList.add('time-cell');
 
         jobCell.setAttribute('data-start', startTime);
@@ -175,11 +168,22 @@ function createGanttChart(map) {
         timeCell.setAttribute('data-start', startTime);
         timeCell.setAttribute('data-end', endTime);
     }
+    
 }
 
 function processData(form) {
-    let x = getArrivalTimes(form);
-    let y = getCpuCycles(form);
+    let x = getArrivalTimes(form).trim();
+    let y = getCpuCycles(form).trim();
+
+    function containsLettersOrSpecialCharacters(inputString) {
+        return /[^\d\s]/.test(inputString); // Regex to check for characters other than digits and spaces
+    }
+
+    // Check if inputs contain letters or special characters
+    if (containsLettersOrSpecialCharacters(x) || containsLettersOrSpecialCharacters(y)) {
+        alert("Invalid Input. Please enter only numbers separated by spaces in Arrival Times and CPU Cycles!");
+        return;
+    }
 
     // Convert the string to an array
     let arrival_array = convertData(x);
@@ -194,8 +198,7 @@ function processData(form) {
     // This array does not know if it contains idle
     let pair_array = combineArrays(arrival_array, burst_array);
     console.log(pair_array[0]);
-    let map = schedule(pair_array);
-
-    createTable(pair_array, map);
-    createGanttChart(map);
+    let ganttChart = schedule(pair_array);
+    createTable(pair_array);
+    createGanttChart(ganttChart);
 }

@@ -1,12 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@200&family=Lexend&display=swap');
 body, html {
-    font-family: "Lexend", sans-serif;
     background-color: #191919;
     height: 100%;
     margin: 0;
     padding: 0;
 }
-
 .nav-bar {
     background-color: #252525;
     color: white;
@@ -15,6 +13,86 @@ body, html {
     justify-content: space-between;
     align-items: center;
 }
+h2 ,  .nav-bar a{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.main-container {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+
+.output-tables {
+    flex-direction: column;
+    display: flex;
+    height: 50%;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#outputTable, #gnattChart{
+    color: white;
+    font-family: "Lexend", sans-serif;
+    border: solid 1px white;
+    border-collapse: collapse;
+    padding-right: 20px;
+    margin: 2%;
+}
+
+th, td {
+    border: 1px solid white;
+    padding: 8px;
+    text-align: center;
+}
+
+h2, label, button, .nav-bar a {
+    font-size: 1em;
+    font-family: "Lexend", sans-serif;
+    color: white;
+}
+
+label, input {
+    display: block;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+button {
+    background-color: transparent;
+    cursor: pointer;
+    border: solid 1px white;
+    margin-top: 1em;
+}
+
+input {
+    width: 99%;
+    padding: 10px; /* You can adjust the padding value as needed */
+    margin-bottom: 10px; /* Optional: Add margin to separate input fields */
+    box-sizing: border-box; /* Optional: Include padding in the total width/height */
+    font-size: 1.5em;
+}
+
+.input-container, .output-container {
+    background-color: #252525;
+    padding: 1%;
+    border-radius: 2%;
+    margin: 1%;
+}
+
+.input-container {
+    flex: 1;
+    height: 40%;
+}
+
+.output-container {
+    flex: 3;
+    height: 80%;
+}
+
+
 
 .nav-bar h2 {
     font-family: 'League Spartan', sans-serif;
@@ -44,6 +122,10 @@ body, html {
     position: relative;
 }
 
+.nav-bar a {
+    text-decoration: none;
+}
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -69,78 +151,6 @@ body, html {
     background-color: #333;
 }
 
-
-h2 {
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-.main-container {
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-}
-
-.output-tables {
-    display: flex;
-    flex-direction: column;
-    height: 50%;
-    align-items: center;
-    justify-content: center;
-}
-
-#outputTable, #gnattChart{
-    color: white;
-    font-family: "Lexend", sans-serif;
-    border: solid 1px white;
-    border-collapse: collapse;
-    margin: 2%;
-}
-
-th, td {
-    border: 1px solid white;
-}
-
-h2, label, button{
-    font-size: 1.8em;
-    font-family: "Lexend", sans-serif;
-    color: white;
-}
-
-label, input {
-    display: block;
-    margin-top: 1%;
-    margin-bottom: 1%;
-}
-
-button {
-    background-color: transparent;
-    cursor: pointer;
-    border: solid 1px white;
-    margin-top: 1em;
-}
-
-input {
-    width: 100%;
-    font-size: 1.5em;
-}
-
-.input-container, .output-container {
-    background-color: #252525;
-    padding: 1%;
-    border-radius: 2%;
-    margin: 1%;
-}
-
-.input-container {
-    flex: 1;
-}
-
-.output-container {
-    flex: 3;
-    height: 92%;
-}
-
 /* Existing styles above */
 
 @media only screen and (max-width: 767px) {
@@ -151,18 +161,4 @@ input {
     .input-container, .output-container {
         margin: 1% 5%; /* Adjust margins for better spacing */
     }
-}
-
-.input-container form {
-    display: flex;
-    flex-direction: column;
-}
-
-.input-container form label,
-.input-container form input {
-    width: 100%;
-}
-
-.input-container form button {
-    width: auto; /* Adjust button width as needed */
 }
