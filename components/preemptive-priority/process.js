@@ -1,3 +1,4 @@
+
 function getArrivalTimes(form) {
     return form.arrivalTimes.value;
 }
