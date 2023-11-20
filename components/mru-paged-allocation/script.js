@@ -1,11 +1,11 @@
 function getFrameSize(form) {
     try {
         const frameSize = parseInt(form.frameSizeForm.value);
-        console.log("Frame Count" + frameSize);
+        console.log("Frame Count: " + frameSize);
         if (isNaN(frameSize)) {
             throw new Error('Please input integers only');
         }
-        
+
         return frameSize;
     } catch (error) {
         alert(error.message);
@@ -15,16 +15,16 @@ function getFrameSize(form) {
 
 function getPages(form) {
     let string = form.pageNumbersForm.value.trim();
-  
+
     // Check if the input contains non-numeric characters or spaces only
     if (!string.match(/^[0-9\s]+$/)) {
-      alert("Pages can only contain numbers separated by spaces");
-      return;
+        alert("Pages can only contain numbers separated by spaces");
+        return;
     }
-  
+
     // Split the string by spaces and convert each part to a number
     return string.split(/\s+/).map(Number);
-  }
+}
 
 function runMRU(form) {
     MRU(getPages(form), getFrameSize(form));
@@ -50,8 +50,10 @@ function MRU(pages, frameSize) {
             if (frames.length < frameSize) {
                 frames.unshift(page); // Add the new page at the beginning (most recently used position)
             } else {
-                frames.pop(); // Remove the least recently used page (last element in array)
-                frames.unshift(page); // Add the new page at the beginning
+                // Find the index of the most recently used page in the frame and replace it
+                const lastUsedIndex = frames.map((p, index) => ({ page: p, lastIndex: pages.lastIndexOf(p, i - 1) })).sort((a, b) => b.lastIndex - a.lastIndex)[0];
+                const index = frames.indexOf(lastUsedIndex.page);
+                frames[index] = page;
             }
 
             framesHistory.push([...frames]);
@@ -61,7 +63,7 @@ function MRU(pages, frameSize) {
     }
 
     // Create a table dynamically
-    var table = document.getElementById("outputTable");
+    const table = document.getElementById("outputTable");
     table.innerHTML = '';
     // Create header row
     const headerRow = table.insertRow();
@@ -95,8 +97,8 @@ function MRU(pages, frameSize) {
     }
 
     // Append the table to the body
-    //document.body.appendChild(table);
-    var outputDiv = document.getElementById("outputTable-container")
+    // document.body.appendChild(table);
+    const outputDiv = document.getElementById("outputTable-container");
     outputDiv.innerHTML += '<br>Total Failure: ' + pageFaults;
     outputDiv.innerHTML += '<br>Total Success: ' + (x - pageFaults);
     outputDiv.innerHTML += '<br>Failure Rate: ' + (((pageFaults / x) * 100).toFixed(2));
